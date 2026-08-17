@@ -27,8 +27,8 @@ services:
 
     ports:
       # host_port:container_port
-      # Change the host port here if 5432 is taken by a local Postgres instance
-      - "${POSTGRES_HOST_PORT:-5432}:5432"
+      # 5433 is used because Windows PostgreSQL 18 occupies localhost:5432
+      - "${POSTGRES_HOST_PORT:-5433}:5432"
 
     volumes:
       # Persistent data — gitignored so data never gets committed
@@ -37,7 +37,7 @@ services:
       - ./database/init:/docker-entrypoint-initdb.d:ro
 
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-knowledgehub} -d ${POSTGRES_DB:-knowledgehub}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-knowledgehub} -d ${POSTGRES_DB:-knowledgehub}" ]
       interval: 5s
       timeout: 5s
       retries: 10

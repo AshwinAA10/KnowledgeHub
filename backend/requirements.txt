@@ -25,6 +25,12 @@ asyncpg>=0.30.0,<1.0.0
 # Load .env files in development
 python-dotenv>=1.0.0,<2.0.0
 
+# Multipart form-data parser for file uploads
+python-multipart>=0.0.18,<1.0.0
+
+# Pure-Python PDF extraction library
+pypdf>=5.1.0,<6.0.0
+
 # =============================================================================
 # Testing
 # =============================================================================

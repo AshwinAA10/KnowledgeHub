@@ -41,29 +41,29 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
     and cleaned up when the server shuts down.
     """
     # ── Startup ──────────────────────────────────────────────────────────────
-    print("⚙️  Starting KnowledgeHub backend...")
+    print("[KnowledgeHub] Starting backend...")
     print(f"   Environment : {settings.app_env}")
     print(f"   Debug mode  : {settings.app_debug}")
 
     try:
         pool = await create_pool()
         set_pool(pool)
-        print("✅ Database pool created successfully.")
+        print("[KnowledgeHub] Database pool created successfully.")
     except Exception as exc:  # noqa: BLE001
         # Log clearly but do not crash — /health will report the error
-        print(f"⚠️  Database pool creation failed: {exc}")
+        print(f"[KnowledgeHub] WARNING: Database pool creation failed: {exc}")
         print("   The app will start, but /health will report DB as disconnected.")
 
     yield  # ← application runs here
 
     # ── Shutdown ─────────────────────────────────────────────────────────────
-    print("🔻 Shutting down KnowledgeHub backend...")
+    print("[KnowledgeHub] Shutting down...")
     from app.database import _pool  # noqa: PLC0415
 
     if _pool is not None:
         await _pool.close()
         clear_pool()
-        print("✅ Database pool closed.")
+        print("[KnowledgeHub] Database pool closed.")
 
 
 # =============================================================================
