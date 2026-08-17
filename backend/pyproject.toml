@@ -1,0 +1,13 @@
+[project]
+name = "knowledgehub-backend"
+version = "0.1.0"
+description = "KnowledgeHub backend — Milestone 0"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+# Run tests from the backend/ directory
+testpaths = ["tests"]
+# Enable asyncio mode so async test functions work without manual event loop setup
+asyncio_mode = "auto"
+# Show extra test summary info
+addopts = "-v --tb=short"

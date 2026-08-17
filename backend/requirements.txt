@@ -1,0 +1,39 @@
+# =============================================================================
+# KnowledgeHub Backend — Python Dependencies
+# Milestone 0: Foundation
+# =============================================================================
+#
+# Pin minor versions for reproducibility; allow patch updates.
+# Run: pip install -r requirements.txt
+# =============================================================================
+
+# Web framework
+fastapi>=0.115.0,<1.0.0
+
+# ASGI server (standard extras include websockets + uvloop on Linux)
+uvicorn[standard]>=0.32.0,<1.0.0
+
+# Data validation (FastAPI uses Pydantic v2 internally)
+pydantic>=2.9.0,<3.0.0
+
+# Settings management via environment variables
+pydantic-settings>=2.6.0,<3.0.0
+
+# Async PostgreSQL driver (no ORM — raw SQL for clarity)
+asyncpg>=0.30.0,<1.0.0
+
+# Load .env files in development
+python-dotenv>=1.0.0,<2.0.0
+
+# =============================================================================
+# Testing
+# =============================================================================
+
+# Test runner
+pytest>=8.3.0,<9.0.0
+
+# Async test support
+pytest-asyncio>=0.24.0,<1.0.0
+
+# HTTP test client for FastAPI (async-capable)
+httpx>=0.28.0,<1.0.0

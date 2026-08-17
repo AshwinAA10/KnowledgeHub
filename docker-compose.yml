@@ -1,0 +1,44 @@
+# =============================================================================
+# KnowledgeHub — Docker Compose
+# Milestone 0: PostgreSQL + pgvector
+# =============================================================================
+#
+# Services defined here:
+#   db  — PostgreSQL 17 with pgvector extension pre-installed
+#
+# Usage:
+#   docker compose up -d          # start in background
+#   docker compose ps             # check health
+#   docker compose logs db        # view logs
+#   docker compose down           # stop (data persists in ./database/data)
+#   docker compose down -v        # stop AND delete volume (full reset)
+# =============================================================================
+
+services:
+  db:
+    image: pgvector/pgvector:pg17
+    container_name: knowledgehub_db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-knowledgehub}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-knowledgehub_dev_password}
+      POSTGRES_DB: ${POSTGRES_DB:-knowledgehub}
+
+    ports:
+      # host_port:container_port
+      # Change the host port here if 5432 is taken by a local Postgres instance
+      - "${POSTGRES_HOST_PORT:-5432}:5432"
+
+    volumes:
+      # Persistent data — gitignored so data never gets committed
+      - ./database/data:/var/lib/postgresql/data
+      # Init scripts run automatically on first startup only
+      - ./database/init:/docker-entrypoint-initdb.d:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-knowledgehub} -d ${POSTGRES_DB:-knowledgehub}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s

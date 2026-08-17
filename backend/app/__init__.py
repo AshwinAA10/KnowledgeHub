@@ -1,0 +1,1 @@
+"""KnowledgeHub backend package."""
