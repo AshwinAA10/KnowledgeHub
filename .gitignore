@@ -50,6 +50,10 @@ build/
 # Persist postgres data locally but never commit it
 database/data/
 
+# ── Uploaded Documents ───────────────────────────────────────────────────────
+backend/uploads/
+uploads/
+
 # ── IDE & Editor ─────────────────────────────────────────────────────────────
 .vscode/
 .idea/

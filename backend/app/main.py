@@ -22,8 +22,10 @@ from app.database import (
     check_database_connectivity,
     clear_pool,
     create_pool,
+    init_db_schema,
     set_pool,
 )
+from app.routers import documents, embeddings, llm, search
 
 # Record when the process started so /health can report uptime
 _START_TIME = time.time()
@@ -49,9 +51,11 @@ async def lifespan(app: FastAPI):  # noqa: ARG001
         pool = await create_pool()
         set_pool(pool)
         print("[KnowledgeHub] Database pool created successfully.")
+        await init_db_schema()
+        print("[KnowledgeHub] Database schema initialized successfully.")
     except Exception as exc:  # noqa: BLE001
         # Log clearly but do not crash — /health will report the error
-        print(f"[KnowledgeHub] WARNING: Database pool creation failed: {exc}")
+        print(f"[KnowledgeHub] WARNING: Database setup failed: {exc}")
         print("   The app will start, but /health will report DB as disconnected.")
 
     yield  # ← application runs here
@@ -92,6 +96,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ── Routers ──────────────────────────────────────────────────────────────────
+app.include_router(documents.router)
+app.include_router(embeddings.router)
+app.include_router(search.router)
+app.include_router(llm.router)
 
 
 # =============================================================================
